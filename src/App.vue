@@ -1,9 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link>
+      <router-link to="/">Home inventory</router-link>
       <router-link to="/create">Add item</router-link>
-      <button class="sort-btn" @click="sortItems">Sort items</button>
     </div>
     <div class="content">
       <div id="account-numbers">
@@ -16,18 +15,18 @@
           <div class="account-item">${{ totalCost }}</div>
         </div>
         <div class="circle xs-hidden">
-          <header class="minor">Newest purchase</header>
-          <div class="account-item xs-hidden">{{ mostRecent }}</div>
+          <header class="minor">Most <br>frequent</header>
+          <div class="account-item xs-hidden">{{ mostFrequent }}</div>
         </div>
         <div class="circle xs-hidden">
-          <header class="minor">Oldest purchase</header>
-          <div class="account-item">{{ oldestPurchase }}</div>
+          <header class="minor">Most <br>expensive</header>
+          <div class="account-item">{{ mostExpensive }}</div>
         </div>
       </div>
       <router-view/>
     </div>
     <div id="footer">
-      <a href="" class="git-hub-link">Github</a>
+      <a href="https://github.com/scotted8/inventory.git" class="fa fa-github fa-3x"></a>
     </div>
   </div>
 </template>
@@ -47,11 +46,27 @@ export default {
       }
       return totalCost.toFixed(2)
     },
-    mostRecent: function() {
-      return '12/12/2020';
+    mostFrequent: function() {
+      let m = '';
+      let q = 0;
+      for (let i = 0; i < this.$root.$data.items.length; i++) {
+        if (this.$root.$data.items[i].quantity > q) {
+          q = this.$root.$data.items[i].quantity;
+          m = this.$root.$data.items[i].name;
+        }
+      }
+      return m;
     },
-    oldestPurchase: function() {
-      return '1/5/1993';
+    mostExpensive: function() {
+      let m = '';
+      let q = 0;
+      for (let i = 0; i < this.$root.$data.items.length; i++) {
+        if (this.$root.$data.items[i].price > q) {
+          q = this.$root.$data.items[i].price;
+          m = this.$root.$data.items[i].name;
+        }
+      }
+      return m;
     }
   },
   methods: {
@@ -89,6 +104,7 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 a {
@@ -109,7 +125,7 @@ a {
   display: flex;
   flex-direction: row;
   background-color: #353535;
-  padding: 20px;
+  padding: 10px;
 }
 
 #nav a {
@@ -177,13 +193,13 @@ header.minor {
 /* Footer */
 #footer {
   background-color: #353535;
-  padding: 20px;
+  padding: 10px;
   text-align: center;
   margin-top: auto;
 }
 
-.git-hub-link {
-    color: green;
+.fa.fa-github.fa-3x {
+  color: yellow;
 }
 
 @media screen and (max-width: 900px) {
@@ -210,6 +226,25 @@ header.minor {
     margin-left: 10px;
     margin-right: 10px;
   }
+}
+
+.swal2-title {
+  font-size: 1.5rem !important;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.swal2-popup {
+  border: 5px solid black !important;
+}
+
+.swal2-styled.swal2-confirm {
+  font-size: 1rem !important;
+  border: none !important;
+  background-color: #464444 !important;
+}
+
+.swal2-content {
+  font-size: .9rem !important;
 }
 
 </style>

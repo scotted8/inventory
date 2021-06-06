@@ -11,7 +11,7 @@
       <label for="purchased">Purchase date:</label><br>
       <input type="text" id="purchaseDate" name="purchaseDate" v-model="purchaseDate">
       <label for="cost"> Purchase amount: </label><br>
-      <input type="text" id="cost" name="cost" v-model.number="price">
+      <currency-input v-model="price" currency="USD"/>
     </form>
     <div class="buttons">
       <router-link :to="'/'" class="btn">Back</router-link>
@@ -44,7 +44,20 @@ export default {
       newItem.price = this.price;
       newItem.purchaseDate = this.purchaseDate;
       this.$root.$data.items.push(newItem);
-      console.log(this.$root.$data.items);
+      this.$swal({
+        title: 'Item added',
+        heightAuto: false,
+        width: '300px',
+        position: 'top',
+      });
+
+      /*Reset the values in the fiels once submitted*/
+      this.id = 0;
+      this.name = '';
+      this.quantity = null;
+      this.description = '';
+      this.price = 9.99;
+      this.purchaseDate = '';
     }
   }
 }

@@ -11,7 +11,7 @@
       <label for="editPurchased">Purchase date:</label><br>
       <input type="text" id="editPurchased" name="purchaseDate" v-model="purchaseDate">
       <label for="editCost"> Purchase amount: </label><br>
-      <input type="number" id="editCost" name="cost" v-model.number="price">
+      <currency-input v-model="price" currency="USD"/>
     </form>
     <div class="buttons">
       <router-link :to="'/'" class="btn">Back</router-link>
@@ -45,13 +45,20 @@ export default {
   },
   methods: {
     updateItem: function() {
-      let currentItem = this.$root.$data.items[this.$route.params.id]
+      let currentItem = this.$root.$data.items[this.$route.params.id];
       currentItem.id = this.id;
       currentItem.name = this.name;
       currentItem.description = this.description;
       currentItem.quantity = this.quantity;
       currentItem.price = this.price;
       currentItem.purchaseDate = this.purchaseDate;
+
+      this.$swal({
+        title: 'Item updated',
+        heightAuto: false,
+        width: '300px',
+        position: 'top',
+      });
     }
   }
 }

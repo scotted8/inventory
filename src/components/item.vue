@@ -13,7 +13,10 @@
       <p>Purchase amount: ${{ price }}</p>
     </div>
   </div>
-  <router-link class="btn" :to="'/edit' + this.id">Edit</router-link>
+  <div class='buttons'>
+    <button @click="deleteItem" class='btn btn-red'>Delete</button>
+    <router-link class="btn" :to="'/edit' + this.id">Edit</router-link>
+  </div>
 </div>
 </template>
 
@@ -28,6 +31,33 @@ export default {
     description: String,
     id: Number,
   },
+  methods: {
+    deleteItem: function() {
+      this.$swal({
+        title: 'Are you sure?',
+        text: 'Deleting the ' + this.name.toLowerCase() + ' cannot be undone',
+        heightAuto: false,
+        width: '300px',
+        showCancelButton: true,
+        showConfirmButton: true,
+        confirmButtonText: 'Delete'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$root.$data.items.splice(this.id, 1);
+          for (let i = 0; i < this.$root.$data.items.length; i++){
+            this.$root.$data.items[i].id = i;
+          }
+          this.$swal({
+            title: this.name,
+            text: 'This item has been deleted',
+            heightAuto: false,
+            width: '300px',
+          })
+
+        }
+      })
+    }
+  }
 }
 </script>
 
@@ -60,25 +90,39 @@ h4 {
   border: 1px solid #b1c1b6;
 }
 
+.buttons {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
 .btn {
   border: none;
-  display: block;
-  width: 75%;
-  height: 30px;
-  margin: 0 auto;
-  border-radius: 6px;
+  height: 40px;
+  border-radius: 8px;
   background-color: #464444;
   font-size: .8rem;
   color: white;
-  text-align: center;
+  width: 40%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+}
+
+.btn-red {
+  background-color: white;
+  color: #1c1d1e;
 }
 
 .btn:hover {
-  color: #0d9865;
-  background-color: white;
+  background-color: #7d7d7d;
+  cursor: pointer;
+}
+
+.btn-red:hover {
+  background-color: #c12121;
+  color: white;
   cursor: pointer;
 }
 
@@ -88,6 +132,5 @@ h4 {
   border-radius: 8px 8px 0 0;
   display: flex;
 }
-
 
 </style>
