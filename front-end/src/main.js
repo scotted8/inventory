@@ -10,14 +10,13 @@ Vue.config.productionTip = false
 Vue.use(VueSweetalert2)
 Vue.use(VueCurrencyInput)
 
-import mock from'./mock-data.js'
-
-let data = {
-  items: mock,
-}
-
 new Vue({
   router,
-  data,
+  data: {
+    indices: 0,
+    quests: 0,
+    laptops: 0,
+    corsairs: 0,
+  },
   render: h => h(App),
 }).$mount('#app')

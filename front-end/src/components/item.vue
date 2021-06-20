@@ -4,35 +4,37 @@
     <h4> {{ name }} </h4>
   </div>
   <div class="info">
-    <div class="description">
-      <p>{{ description }}</p>
-    </div>
     <div class="other-info">
       <p>Quantity: {{ quantity }}</p>
-      <p>Purchase date: {{ purchaseDate }}</p>
-      <p>Purchase amount: ${{ price }}</p>
+      <p>Owner(s): {{ owner }}</p>
+      <p>Condition: {{ condition }} </p>
+    </div>
+    <div class="comments">
+      <p>{{ comments }}</p>
     </div>
   </div>
   <div class='buttons'>
     <button @click="deleteItem" class='btn btn-red'>Delete</button>
-    <router-link class="btn" :to="'/edit' + this.id">Edit</router-link>
+    <router-link class="btn" :to="'/edit' + this._id">Edit</router-link>
   </div>
 </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'Item',
   props: {
     name: String,
     quantity: Number,
-    price: Number,
-    purchaseDate: String,
-    description: String,
-    id: Number,
+    comments: String,
+    _id: String,
+    owner: String,
+    condition: String,
   },
   methods: {
-    deleteItem: function() {
+    deleteItem() {
       this.$swal({
         title: 'Are you sure?',
         text: 'Deleting the ' + this.name.toLowerCase() + ' cannot be undone',
@@ -42,20 +44,20 @@ export default {
         showConfirmButton: true,
         confirmButtonText: 'Delete'
       }).then((result) => {
-        if (result.isConfirmed) {
-          this.$root.$data.items.splice(this.id, 1);
-          for (let i = 0; i < this.$root.$data.items.length; i++){
-            this.$root.$data.items[i].id = i;
-          }
-          this.$swal({
-            title: this.name,
-            text: 'This item has been deleted',
-            heightAuto: false,
-            width: '300px',
-          })
-
-        }
-      })
+        if (result.isConfirmed) this.deleteForReals();
+      });
+    },
+    async deleteForReals() {
+      try {
+        await axios.delete("/api/items/" + this._id);
+        this.$emit('finished');
+        this.$swal({
+          title: this.name,
+          text: 'This item has been deleted',
+          heightAuto: false,
+          width: '300px',
+        })
+      } catch(error) { console.log(error); }
     }
   }
 }
@@ -70,8 +72,9 @@ h4 {
   color: white;
 }
 
-.description {
-  padding: 8px 10px;
+.comments {
+  padding: 10px 10px;
+  margin-bottom: 10px;
   background-color: #e2e4e3;
 }
 
@@ -88,6 +91,8 @@ h4 {
   border-radius: 12px;
   padding-bottom: 10px;
   border: 1px solid #b1c1b6;
+  width: 300px;
+  margin-right: 15px;
 }
 
 .buttons {
@@ -100,7 +105,7 @@ h4 {
   border: none;
   height: 40px;
   border-radius: 8px;
-  background-color: #464444;
+  background-color: #232323;
   font-size: .8rem;
   color: white;
   width: 40%;
@@ -127,10 +132,16 @@ h4 {
 }
 
 .title {
-  background-color: #0d9865;
+  background-color: rgb(115 12 33);
   padding: 10px;
   border-radius: 8px 8px 0 0;
   display: flex;
+}
+
+@media screen and (max-width: 600px) {
+  .item {
+    margin-right: 0px;
+  }
 }
 
 </style>

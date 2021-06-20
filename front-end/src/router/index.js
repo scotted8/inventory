@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Create from '../views/Create.vue'
 import Edit from '../views/edit.vue'
+import DemoKits from '../views/demokits.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/edit:id',
     name: 'Edit',
     component: Edit
+  },
+  {
+    path: '/demokits',
+    name: 'Demo Kits',
+    component: DemoKits,
   }
 ]
 
