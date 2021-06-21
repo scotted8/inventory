@@ -91,7 +91,7 @@ h4 {
   border-radius: 12px;
   padding-bottom: 10px;
   border: 1px solid #b1c1b6;
-  width: 300px;
+  width: 325px;
   margin-right: 15px;
 }
 
