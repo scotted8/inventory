@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <div class='wrapper' v-if="user">
-      <div id="nav">
-        <router-link to="/">Inventory</router-link>
-        <router-link to="/create">Add item</router-link>
-        <button class="sign-out" @click="logout">Sign out</button>
-      </div>
-      <div class="content">
+    <div id="nav">
+      <router-link to="/" v-if='user'>Inventory</router-link>
+      <router-link to="/create" v-if='user'>Add item</router-link>
+      <button class="sign-out" @click="logout" v-if='user'>Sign out</button>
+      <h2 class='modus' v-if='!user'>Modus VR</h2>
+    </div>
+      <div class="content" v-if='user'>
         <div id="account-numbers">
           <div class="quick-view-title">
             <h4>Quick View</h4>
@@ -30,10 +30,10 @@
         </div>
         <router-view/>
       </div>
-    </div>
     <Login v-else />
     <div id="footer">
-      <a href="https://github.com/scotted8/inventory.git" class="fa fa-github fa-3x"></a>
+      <a href="https://github.com/scotted8/inventory.git" class="fa fa-github fa-3x footer-item"></a>
+      <h1 class="footer-item">20</h1>
     </div>
   </div>
 </template>
@@ -87,6 +87,10 @@ export default {
 </script>
 
 <style>
+.modus {
+  margin-left: 25px;
+  color: white;
+}
 html, body {
   padding: 0;
   margin: 0;
@@ -199,6 +203,15 @@ header.minor {
   text-align: center;
   height: 80px;
   border-top: 1px solid black;
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-item {
+  color: white;
+  margin-left: 50px;
 }
 
 .fa.fa-github.fa-3x {

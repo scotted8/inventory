@@ -88,6 +88,7 @@ export default {
 <style scoped>
 form, fieldset {
   border: none;
+  margin: 0;
 }
 
 legend {
@@ -111,7 +112,6 @@ h1 {
 .register, .login {
   border-radius: 10px;
   background-color: rgb(115 12 33);
-  width: 100%;
   padding: 15px;
 }
 
@@ -143,8 +143,9 @@ input {
 
 @media screen and (max-width: 600px) {
   .accounts{
-    max-width: 300px;
-
+    margin: 20px 0 0 0 ;
+    max-width: 100%;
+    padding: 10px;
   }
 }
 </style>
