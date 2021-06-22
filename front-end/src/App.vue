@@ -1,33 +1,37 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Inventory</router-link>
-      <router-link to="/create">Add item</router-link>
-    </div>
-    <div class="content">
-      <div id="account-numbers">
-        <div class="quick-view-title">
-          <h4>Quick View</h4>
-        </div>
-        <div class="circle">
-          <header class="minor">Indices</header>
-          <div class="account-item">{{ totalIndices }}</div>
-        </div>
-        <div class="circle">
-          <header class="minor">Quests</header>
-          <div class="account-item">{{ totalQuests }}</div>
-        </div>
-        <div class="circle">
-          <header class="minor">Laptops</header>
-          <div class="account-item xs-hidden">{{ totalLaptops }}</div>
-        </div>
-        <div class="circle">
-          <header class="minor">Corsairs</header>
-          <div class="account-item">{{ totalCorsairs }}</div>
-        </div>
+    <div class='wrapper' v-if="user">
+      <div id="nav">
+        <router-link to="/">Inventory</router-link>
+        <router-link to="/create">Add item</router-link>
+        <button class="sign-out" @click="logout">Sign out</button>
       </div>
-      <router-view/>
+      <div class="content">
+        <div id="account-numbers">
+          <div class="quick-view-title">
+            <h4>Quick View</h4>
+          </div>
+          <div class="circle">
+            <header class="minor">Indices</header>
+            <div class="account-item">{{ totalIndices }}</div>
+          </div>
+          <div class="circle">
+            <header class="minor">Quests</header>
+            <div class="account-item">{{ totalQuests }}</div>
+          </div>
+          <div class="circle">
+            <header class="minor">Laptops</header>
+            <div class="account-item xs-hidden">{{ totalLaptops }}</div>
+          </div>
+          <div class="circle">
+            <header class="minor">Corsairs</header>
+            <div class="account-item">{{ totalCorsairs }}</div>
+          </div>
+        </div>
+        <router-view/>
+      </div>
     </div>
+    <Login v-else />
     <div id="footer">
       <a href="https://github.com/scotted8/inventory.git" class="fa fa-github fa-3x"></a>
     </div>
@@ -35,8 +39,22 @@
 </template>
 
 <script>
+import Login from '@/components/login.vue';
+import axios from 'axios'
+
 export default {
   name: 'App',
+  components: {
+    Login,
+  },
+  async created() {
+    try {
+      let response = await axios.get('/api/users');
+      this.$root.$data.user = response.data.user;
+    } catch(error) {
+      console.log(error);
+    }
+  },
   computed: {
     totalIndices() {
       return this.$root.$data.indices;
@@ -49,6 +67,20 @@ export default {
     },
     totalCorsairs() {
       return this.$root.$data.corsairs;
+    },
+    user() {
+      return this.$root.$data.user;
+    }
+  },
+  methods: {
+    async logout() {
+      try {
+        await axios.delete("/api/users");
+        this.$root.$data.user = null;
+      } catch(error) {
+        console.log(error);
+        this.$root.$data.user = null;
+      }
     }
   }
 }
@@ -213,6 +245,23 @@ header.minor {
 
 .swal2-content {
   font-size: .9rem !important;
+}
+
+.sign-out {
+  margin-left: auto;
+  margin-right: 25px;
+  height: 45px;
+  width: 100px;
+  border-radius: 4px;
+  border: none;
+  font-size: .75rem;
+  background-color: white;
+  transition: .2s ease-in-out;
+}
+
+.sign-out:hover {
+  cursor: pointer;
+  background-color: #e4e4e4;
 }
 
 </style>

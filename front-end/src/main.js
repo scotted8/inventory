@@ -10,13 +10,16 @@ Vue.config.productionTip = false
 Vue.use(VueSweetalert2)
 Vue.use(VueCurrencyInput)
 
+let data = {
+  indices: 0,
+  quests: 0,
+  laptops: 0,
+  corsairs: 0,
+  user: null,
+}
+
 new Vue({
   router,
-  data: {
-    indices: 0,
-    quests: 0,
-    laptops: 0,
-    corsairs: 0,
-  },
+  data,
   render: h => h(App),
 }).$mount('#app')
